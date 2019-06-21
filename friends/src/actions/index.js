@@ -25,12 +25,36 @@ export const FETCH_SUCCESS = 'FETCH_SUCCESS';
 export const FETCH_FAIL = 'FETCH_FAI';
 
 export const getFriends = () => dispatch => {
-    console.log('hella')
     dispatch({ type: FETCH_START});
     axiosWithAuth()
         .get('/friends')
         .then(res => {
-            console.log(res.data)
             dispatch({ type: FETCH_SUCCESS, payload: res.data})
+        })
+}
+
+export const ADD_START = 'ADD_START';
+export const ADD_SUCCESS = 'ADD_SUCCESS';
+
+export const addFriends = friend => dispatch => {
+  
+    dispatch({ type: ADD_START })
+    axiosWithAuth()
+        .post('/friends', friend)
+        .then(res => {
+            dispatch({ type: ADD_SUCCESS, payload: res.data })
+        })
+}
+
+export const DELETE_SUCCESS = 'DELETE_SUCCESS';
+
+export const deleteFriends = id => dispatch => {
+    console.log(id);
+    dispatch({ type: DELETE_SUCCESS })
+    axiosWithAuth()
+        .delete('friends/:id', id)
+        .then(res => {
+            console.log(res)
+            dispatch({ type: DELETE_SUCCESS, payload: res.data })
         })
 }

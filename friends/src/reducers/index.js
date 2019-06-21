@@ -1,10 +1,11 @@
-import { LOGIN_START ,LOGIN_SUCCESS, LOGIN_FAIL, FETCH_START, FETCH_SUCCESS, FETCH_FAIL } from '../actions';
+import { LOGIN_START ,LOGIN_SUCCESS, LOGIN_FAIL, FETCH_START, FETCH_SUCCESS, FETCH_FAIL,  ADD_START, ADD_SUCCESS, DELETE_SUCCESS } from '../actions';
 
 const initialState = {
     friends: [],
     fetchingData: false,
     isLoggingIn: false,
-    error: ''
+    error: '',
+    updatingFriend: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -46,6 +47,24 @@ const reducer = (state = initialState, action) => {
                     error: 'Not working...',
                     isLoggingIn: false
                 };
+        case ADD_START:
+            return {
+                ...state,
+                error: '',
+            };
+        case ADD_SUCCESS:
+            return {
+                ...state,
+                error: '', 
+                fetchingData: false,
+                friends: action.payload
+            };
+        case DELETE_SUCCESS:
+            return {
+                ...state,
+                error: '',
+                friends: action.payload
+            }
             default: 
                 return state; 
     }
