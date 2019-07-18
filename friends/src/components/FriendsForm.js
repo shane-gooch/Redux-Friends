@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { axiosWithAuth } from "../helper/axiosWithAuth";
+import uuid from "uuid";
 
-export default function FriendsForm() {
+export default function FriendsForm({ setFriendsList }) {
+  const [initialFormState, setInitialFormState] = useState({
+    name: "",
+    age: "",
+    email: ""
+  });
   const [formData, setFormData] = useState({
-    id: "",
     name: "",
     age: "",
     email: ""
@@ -12,8 +16,12 @@ export default function FriendsForm() {
 
   const [isAdding, setIsAdding] = useState(false);
 
-  const changeHandler = () => {
-    console.log("conencted");
+  const changeHandler = e => {
+    setFormData({
+      ...formData,
+      id: uuid(),
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = e => {
@@ -25,7 +33,10 @@ export default function FriendsForm() {
     const url = "http://localhost:5000/api/friends";
     axiosWithAuth()
       .post(url, formData)
-      .then(res => console.log(res))
+      .then(res => {
+        setFriendsList(res.data);
+        setFormData(initialFormState);
+      })
       .catch(err => console.log(err.response.data));
   }, [isAdding]);
 
